@@ -26,9 +26,13 @@ export function UpdateInvoice({ id }: { id: string }) {
 }
 
 export function DeleteInvoice({ id }: { id: string }) {
-   const deleteInvoiceWithId = deleteInvoice.bind(null, id);
-   return (
-    <form action={deleteInvoiceWithId}>
+  // Wrap the async action to ensure it returns void
+  const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+  const handleDelete = async (formData: FormData) => {
+    await deleteInvoiceWithId(formData);
+  };
+  return (
+    <form action={handleDelete}>
       <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-4" />
