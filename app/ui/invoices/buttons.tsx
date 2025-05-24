@@ -26,12 +26,14 @@ export function UpdateInvoice({ id }: { id: string }) {
 }
 
 export function DeleteInvoice({ id }: { id: string }) {
-  const deleteInvoiceWithId = deleteInvoice.bind(null, id);
-  const handleDelete = async () => {
-    await deleteInvoiceWithId();
-  };
+  // Use an inline server action to avoid type issues
   return (
-    <form action={handleDelete}>
+    <form
+      action={async () => {
+        'use server';
+        await deleteInvoice(id);
+      }}
+    >
       <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-4" />
